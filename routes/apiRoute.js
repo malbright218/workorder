@@ -52,6 +52,7 @@ module.exports = function (app) {
     });
 
     app.put("/api/orders", function (req, res) {
+        console.log(req)
         db.WorkOrders.update(
             req.body,
             {
@@ -62,6 +63,17 @@ module.exports = function (app) {
                 res.json(dbPost);
             });
     });
+
+    app.delete("/api/orders/:id", function(req, res) {
+        db.WorkOrders.destroy({
+          where: {
+            id: req.params.id
+          }
+        })
+          .then(function(dbPost) {
+            res.json(dbPost);
+          });
+      });
     
     
 };
