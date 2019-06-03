@@ -10,7 +10,7 @@ height: 100%;
 font-family: 'DIN', sans-serif;
 }
 
-#allOrders {
+#allOrders, #report {
     width: 90%;
     margin-left: 5%;
 }

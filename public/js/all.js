@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     $("#goHome").on("click", function () {
         window.location.href = "index.html"
     })
@@ -45,7 +45,7 @@ $(document).ready(function () {
                 td5.append("late")
                 blankRow.addClass("late")
                 blankRow.css("color", "#fff")
-            } 
+            }
             var button1 = $("<button>")
             button1.addClass("btn btn-danger btn-xs")
             button1.attr("id", data[i].id)
@@ -84,11 +84,46 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".btn-success", function () {
-        console.log(this.id)
-        var updateTask = {}
-        updateTask.id = this.id
-        updateTask.status = "completed"
-        update(updateTask)
+        // Getting the current date for marking when a task is completed
+        var dateArr = [];
+        var idArr = []
+        idArr.push(this.id-1)
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var end = d.getFullYear() + '/' +
+            (month < 10 ? '0' : '') + month + '/' +
+            (day < 10 ? '0' : '') + day;
+        // END
+        $.get("/api/orders", getDate)
+
+        function getDate(data) {
+            
+            var i = idArr[0]
+            console.log(idArr)
+            console.log(data[i])
+            
+            var dateDue = data[i].issued
+            var converted = moment(dateDue).add(1, 'days').format("MM-DD-YYYY")
+            console.log(converted)
+            dateArr.push(converted)
+            var start = dateArr[0]
+            var start1 = new Date(start)
+            var end1 = new Date(end)
+            var diff = new Date(end1 - start1)
+            var days = diff/1000/60/60/24;
+            console.log(days)
+            var updateTask = {}
+            updateTask.id = i+1
+            updateTask.status = "completed"
+            updateTask.completed = moment(end1).format("YYYY-MM-DD")
+            updateTask.timeBetween = days
+            console.log(updateTask)
+          
+            // console.log(thisasdas)
+            update(updateTask)
+        }
+
 
     })
 
@@ -110,33 +145,33 @@ $(document).ready(function () {
         /*Make a loop that will continue until
         no switching has been done:*/
         while (switching) {
-          //start by saying: no switching is done:
-          switching = false;
-          rows = table.rows;
-          /*Loop through all table rows (except the
-          first, which contains table headers):*/
-          for (i = 1; i < (rows.length - 1); i++) {
-            //start by saying there should be no switching:
-            shouldSwitch = false;
-            /*Get the two elements you want to compare,
-            one from current row and one from the next:*/
-            x = rows[i].getElementsByTagName("TD")[0];
-            y = rows[i + 1].getElementsByTagName("TD")[0];
-            //check if the two rows should switch place:
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              //if so, mark as a switch and break the loop:
-              shouldSwitch = true;
-              break;
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[0];
+                y = rows[i + 1].getElementsByTagName("TD")[0];
+                //check if the two rows should switch place:
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
             }
-          }
-          if (shouldSwitch) {
-            /*If a switch has been marked, make the switch
-            and mark that a switch has been done:*/
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-          }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
         }
-      }
+    }
 
 
 

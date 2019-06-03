@@ -1,11 +1,13 @@
 $(document).ready(function () {
     $.get("/api/user", display)
 
+    
+    var data = []
+
     function display(data) {
         for (var i = 0; i < data.length; i++) {
             var actives = []
-            var count = 0;
-            console.log(i + " | " + actives)            
+            var count = 0;        
             for (var j = 0; j < data[i].WorkOrders.length; j++) {
                 var count = 0;
                 actives.push(data[i].WorkOrders[j].status)
@@ -13,9 +15,7 @@ $(document).ready(function () {
                 var count = actives.reduce(function(n, val) {
                     return n + (val === search);
                 },0) 
-                console.log(count + " in the push loop")
             }
-            console.log(count + " out of the push loop")
             // POPULATE USER TABLE
             var blankrow = $("<tr>")
             var td1 = $("<td>")
@@ -76,7 +76,6 @@ $(document).ready(function () {
         newOrder.UserId = userNo
 
         if (body == '') {
-            console.log("no")
             return;
         } else {
             addOrder(newOrder)
@@ -96,4 +95,62 @@ $(document).ready(function () {
     $("#allOrders").on("click", function() {
         window.location.href = "all.html"
     })
+
+
+    $.get("/api/orders", go)
+    
+
+    function go(info) {
+        $.get("/api/user", x)
+        var xArr = []
+        function x(data) {
+            for (var i = 0; i < data.length; i++) {
+                xArr.push(data[i].name)
+            }
+        }
+
+        for (var i = 0; i < info.length; i++) {
+            var inner = []
+            inner.push(info[i].id)
+            inner.push(info[i].UserId)
+            inner.push(info[i].task)
+            inner.push(info[i].priority)
+            inner.push(info[i].status)
+            inner.push(info[i].issued)
+            inner.push(info[i].due)
+            inner.push(info[i].completed)
+            inner.push(info[i].timeBetween)
+            console.log(inner)
+            data.push(inner)
+        }
+    }
+
+    // var data = [
+    //     ['Foo', 'programmer'],
+    //     ['Bar', 'bus driver'],
+    //     ['Moo', 'Reindeer Hunter']
+    // ];
+
+
+    function download_csv() {
+        var csv = 'id,UserId,Task,Priority,Status,Issued,Due,Completed,DaysBetween\n';
+        data.forEach(function (row) {
+            csv += row.join(',');
+            csv += "\n";
+            
+        });
+
+        console.log(csv);
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = 'people.csv';
+        hiddenElement.click();
+    }
+
+    $("#report").on("click", download_csv)
+
+
+
+
 })
