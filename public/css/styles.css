@@ -40,6 +40,9 @@ width: 800px;
 background-color: rgba(0,0,0,0.75) !important;
 }
 
+.card-body {
+    background-color: rgba(0,0,0,0.75) !important;
+}
 
 .social_icon span{
 font-size: 60px;
@@ -114,6 +117,10 @@ margin-left: 4px;
     visibility: hidden;
 }
 
+#signInCard {
+    overflow: auto;
+}
+
 #signUpDivButton {
     text-align: center;
 }
@@ -156,4 +163,8 @@ th, td {
 a {
     text-decoration: none;
     color: #FFC312;
+}
+
+#scroll {
+    height: 900px;
 }
