@@ -10,9 +10,22 @@ $(document).ready(function () {
 
     function go(data) {
         for (var i = 0; i < data.length; i++) {
+
+            var s = data
+            function compare(a, b) {
+               if (a.id < b.id) {
+                   return -1;
+               }
+               if (a.id > b.id) {
+                   return 1
+               }
+               return 0
+            }
+            s.sort(compare)
+
             assignedUsers.push(data[i].name)
-        }
-    }
+        }        
+    }   
 
     function display(data) {
         for (var i = 0; i < data.length; i++) {

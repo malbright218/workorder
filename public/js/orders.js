@@ -6,6 +6,19 @@ $(document).ready(function () {
 
     function go(data) {
         for (var i = 0; i < data.length; i++) {
+
+            var s = data
+            function compare(a, b) {
+               if (a.id < b.id) {
+                   return -1;
+               }
+               if (a.id > b.id) {
+                   return 1
+               }
+               return 0
+            }
+            s.sort(compare)
+
             assignedUsers.push(data[i].name)
         }        
     }   
@@ -19,11 +32,12 @@ $(document).ready(function () {
             givenDate = new Date(givenDate)   
             // console.log(assignedUsers)
             if (data[i].status === 'active') {
-                console.log(assignedUsers)
+                // console.log(assignedUsers)
                 var assigned = data[i].UserId
-                var z = assigned - 1
+                var z = assigned -1 
+                // console.log(z)
                 // console.log(data)
-                console.log(assignedUsers)  
+                // console.log(assignedUsers)  
                 var blankRow = $("<tr>")
                 var td1 = $("<td>") // Assigned User
                 var td2 = $("<td>") // Priority level
@@ -33,6 +47,7 @@ $(document).ready(function () {
                 var td6 = $("<td>") // Complete action, check button
                 td6.addClass("table-btn")
                 td1.append(assignedUsers[z])
+                console.log(assignedUsers[z])
                 td2.append(data[i].priority)
                 td3.append(data[i].task)
                 td4.append(converted)
