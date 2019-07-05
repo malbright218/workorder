@@ -51,6 +51,14 @@ module.exports = function (app) {
         });
     });
 
+    app.get("/api/actives", function(req,res) {
+        db.WorkOrders.findAll({
+            where: {
+                [db.or]: [{status: 'active'}, {status: 'late'}]
+            }
+        })
+    })
+
     app.put("/api/orders", function (req, res) {
         console.log(req)
         db.WorkOrders.update(

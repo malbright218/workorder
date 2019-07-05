@@ -120,20 +120,17 @@ $(document).ready(function () {
             inner.push(info[i].due)
             inner.push(info[i].completed)
             inner.push(info[i].timeBetween)
-            console.log(inner)
             data.push(inner)
         }
-    }  
-
-
+    }
     function download_csv() {
+        console.log(data)
         var csv = 'id,UserId,Task,Priority,Status,Issued,Due,Completed,DaysBetween\n';
-        data.forEach(function (row) {
+        data.forEach(function(row) {
             csv += row.join(',');
             csv += "\n";
             
         });
-
         console.log(csv);
         var hiddenElement = document.createElement('a');
         hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
